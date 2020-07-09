@@ -1,25 +1,25 @@
-This project is devided into two parts.
+This project is divided into two parts.
 First, the goal is to develop a high quality FCM implementation in C++ based on the work by \cite{newland2019CFM18}.
 Second, the aim is to estimate impactor properties from crater cluster data, using the FCM implementation from the first part combined with an MCMC inversion method.
 
 \subsection{C++ FCM Implementation}
 \label{sec:goal1}
-The goal is to implement C++ numerics algorithms, which integrate all differential equations of the meteoroid and its fragments after breakup, along with a Python API.
+The goal is to implement C++ numerical algorithms, which integrate all differential equations of the meteoroid and its fragments after breakup, along with a Python API.
 Milestones are listed in table~\ref{tab:milestones1}.
 In order to be able to predict impact crater locations in debris fields, all objects have to be simulated in three dimensional space.
 We will closely follow the work by \cite{newland2019CFM18}, who has already implemented three dimensional trajectory calculations.
 
 It is important to note that the FCM model does not represent a detailed simulation of the actual processes of ablation, airflow and break up.
-Rather, it models these complex processes in a simplified form, based on results of more detailed studies involving 3D hydrodynamic simulations of asymmetric meteoroids decending through the atmosphere \citep[e.g.][]{artemieva1996interaction,artemieva2001motion}.
+Rather, it models these complex processes in a simplified form, based on results of more detailed studies involving 3D hydrodynamic simulations of asymmetric meteoroids descending through the atmosphere \citep[e.g.][]{artemieva1996interaction,artemieva2001motion}.
 The aim is to have the results be a close enough approximation, while cutting down on computational complexity by reducing the entire process to a set of ODEs.
 
 As noted in \cite{newland2019CFM18}, the FCM can be simplified to replicate both a pure cloud model and a pure fragmentation model.
-The aim is to make the implementation modular s.t. it is possible to accomodate most flavours that people have been using in both classes of simpler models.
+The aim is to make the implementation modular s.t. it is possible to accommodate most flavours that people have been using in both classes of simpler models.
 Summaries can be found in \cite{artemieva1996interaction,artemieva2001motion,register2017asteroid,mcmullan2019uncertainty}.
 Since all these models build on the standard meteoroid equations \citep[e.g.][]{opik1958physics}, the actual differences in implementation are somewhat minor.
 However, one thing that we have to look out for is that a poor implementation of these switches between different methods could dramatically decrease the cache hit rate, which typically has a significant impact on performance.
 
-% Contrary to what \cite{wheeler2017fragmentcloud} proposed and \cite{newland2019CFM18} then adopted, we will use an adaptive time stepping scheme for integrating the model's ODEs, rather than setting a fixed height step size (e.g. $\delta h = 10\unit{m}$ as proposed by \cite{wheeler2017fragmentcloud}). We think that this will be much more computationally efficent, while at the same time providing better accuracy. With \cite{wheeler2017fragmentcloud}'s approach, a lot of computation time is wasted early on in the simulation, when not much is happining in the thin upper atmosphere. Later in the simulation, at a given CPU time budget, the fixed step size $\delta h$ then limits the precision to which the important bits of the simulation, namely fragment breakup and debris cloud modeling, can be computed. We think that a continuous height step size $\delta h$ can be acheived much more efficiently by, after the simulation is finished, simply interpolating the resulting time series data with a higher order interpolation method such as cubic spline.
+% Contrary to what \cite{wheeler2017fragmentcloud} proposed and \cite{newland2019CFM18} then adopted, we will use an adaptive time stepping scheme for integrating the model's ODEs, rather than setting a fixed height step size (e.g. $\delta h = 10\unit{m}$ as proposed by \cite{wheeler2017fragmentcloud}). We think that this will be much more computationally efficient, while at the same time providing better accuracy. With \cite{wheeler2017fragmentcloud}'s approach, a lot of computation time is wasted early on in the simulation, when not much is happening in the thin upper atmosphere. Later in the simulation, at a given CPU time budget, the fixed step size $\delta h$ then limits the precision to which the important bits of the simulation, namely fragment breakup and debris cloud modeling, can be computed. We think that a continuous height step size $\delta h$ can be achieved much more efficiently by, after the simulation is finished, simply interpolating the resulting time series data with a higher order interpolation method such as cubic spline.
 
 \begin{table*}[htbp]
     \textbf{Milestones for C++ FCM implementation:}\\[0.35em]
@@ -27,7 +27,7 @@ However, one thing that we have to look out for is that a poor implementation of
         \DTMDisplaydate{2020}{7}{10}{4} & Decide on feature set. \\
         \DTMDisplaydate{2020}{7}{17}{4} & Have pure debris cloud version working in C++ with a Python API. \\
         \DTMDisplaydate{2020}{7}{24}{4} & Have full model working, including break up. \\
-        \DTMDisplaydate{2020}{7}{31}{4} & Complete testing, documentation, and build \& depolyment code.
+        \DTMDisplaydate{2020}{7}{31}{4} & Complete testing, documentation, and build \& deployment code.
     \end{tabular}
     \caption{Milestones for part one (sec~\ref{sec:goal1})\label{tab:milestones1}}
 \end{table*}
@@ -37,7 +37,7 @@ However, one thing that we have to look out for is that a poor implementation of
 With the efficient code of part one, the goal is to investigate the inverse problem of estimating impactor properties from crater cluster data.
 Milestones are listed in table~\ref{tab:milestones2}.
 Crater cluster data from \cite{daubar2019recently} has already been used by \cite{newland2019CFM18}, and is readily available.
-We will frist conduct a literature review about potential inversion methods.
+We will first conduct a literature review about potential inversion methods.
 
 If we decide to use an MCMC method, a cost function is needed, which the algorithm will try to minimise.
 Since there is a lot of randomness involved in meteoroid break up, having the algorithm try to replicate the exact same crater cluster formation as in the input image is most probably ill-advised.
@@ -47,7 +47,7 @@ An important consideration is which impactor properties to invert for, and which
 Necessarily variable are the meteoroid mass, radius, and its velocity and angle relative to the planet's surface at the start of atmospheric entry. These are all continuous parameters.
 However, in their study, \cite{wheeler2018atmospheric} also varied the internal composition of impactors, while \cite{newland2019CFM18} 
 kept it fixed for their Monte Carlo analysis.
-Most of the parameters for the impactor's internal composition, as laid out in \cite{wheeler2018atmospheric}, are descrete values, which might require a special flavour of MCMC algorithm.
+Most of the parameters for internal composition of impactors, as laid out in \cite{wheeler2018atmospheric}, are discrete values, which might require a special flavour of MCMC algorithm.
 
 Overall, this part of the project is highly exploratory in nature. At first, the focus will be on finding a small set of variable parameters for which we can find an inversion method, together with a suitable cost function, that actually converges. If time permits, we will investigate expanding the set of variable parameters.
 
