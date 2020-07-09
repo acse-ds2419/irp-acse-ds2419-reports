@@ -1,14 +1,14 @@
 Analysis of impact craters on bodies within the solar system can give insight into properties of meteoroids forming these craters.
-While there are empirical relationships for estimating the size of a crater from impactor properties and vice versa \citep[e.g.][]{holsapple1987scaling}, these relationships are not directly applicable to small impacts on planets with an atmoshpere.
+While there are empirical relationships for estimating the size of a crater from impactor properties and vice versa \citep[e.g.][]{holsapple1987scaling}, these relationships are not directly applicable to small impacts on planets with an atmosphere.
 When impacting these planets, small-sized meteoroids experience significant deceleration, mass loss due to ablation, and potential break up before impacting the ground.
-As a result of these processes, they typically produce clusters of impact craters, or only leave a strewn field of small meteorites if most of their kinetic energy has been deposited in the atmoshpere.
+As a result of these processes, they typically produce clusters of impact craters, or only leave a strewn field of small meteorites if most of their kinetic energy has been deposited in the atmosphere.
 
-The aim of this project is to invert impactor properties from data in a recent survey of Marsian impact crater clusters \citep{daubar2019recently}.
+The aim of this project is to invert impactor properties from data in a recent survey of Martian impact crater clusters \citep{daubar2019recently}.
 We will investigate whether stochastic inversion methods, such as Markov Chain Monte Carlo (MCMC), are a viable approach for this problem.
 MCMC models, such as the Gibbs sampler combined with the Metropolis-Hastings algorithm \citep{gelfand1990sampling}, have been a very popular black box inversion method in many research areas \citep[in epidemiology e.g.][]{flaxman2020estimating}.
 In order to use an MCMC method, a high-performance numerical model of atmospheric decent and crater cluster formation is needed.
 
-A popular way of modeling these processes is to build on the standard meteor physics equations of motion and ablation \citep[e.g.][]{opik1958physics}, which are a set of ordinary differential equations (ODEs) treating the meteoroid as a homogenous, spherically or ellipsoidally shaped body.
+A popular way of modeling these processes is to build on the standard meteor physics equations of motion and ablation \citep[e.g.][]{opik1958physics}, which are a set of ordinary differential equations (ODEs) treating the meteoroid as a homogeneous, spherical or ellipsoidal body.
 Break up is modeled to occur when the pressure difference between the leading edge and the trailing edge of the meteoroid exceeds the aerodynamic strength of the meteoroid material.
 % The pressure at the leading edge, behind the bow shock, is called the stagnation pressure. The pressure on the other end, in the meteoroid wake, is nearly zero \citep{passey1980effects}.
 The exact mechanism of break up is subject to ongoing research. Most break up models use either a ``pankake'' approach, or a discrete fragmentation approach \citep{register2017asteroid}.
@@ -33,6 +33,6 @@ Equations for potentially hundreds of fragments and debris clouds have to be sol
 
 The FCM implementation by \cite{newland2019CFM18} was based in pure Python.
 A single simulation run took on the order of seconds to tens of seconds, and was limited, by nature of its pure Python implementation, to be single-threaded.
-To facilitate fast iteration and realistic, scalable runtimes for the inversion problem, we aim to develop an open source FCM implementation in a fast, compiled language, C++, along with a Python API.
+To facilitate fast iteration and realistic, scalable run times for the inversion problem, we aim to develop an open source FCM implementation in a fast, compiled language, C++, along with a Python API.
 We expect the performance to increase by at least two orders of magnitude from this switch on its own.
 If time permits, we will investigate further optimisations.
