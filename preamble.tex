@@ -1,0 +1,64 @@
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+
+		%%% Sprache %%%
+\usepackage[british]{babel}
+%\usepackage[ngerman]{babel}
+
+		%%%  meist n\"otig  %%%
+\usepackage[useregional,showdow]{datetime2}		% display date and time
+\DTMlangsetup[en-GB]{abbr}
+\usepackage{microtype} 							% tighter typesetting
+\usepackage{url} 								% Zitieren (mit Internetadresse)
+\usepackage[round]{natbib}						% F\"ur NatBib-Zitate
+\usepackage{hyperref}							% references
+\usepackage{graphicx,float,caption} 			% Fliessumgebungen mit Bildern und captions
+\usepackage{placeins} 							% f\"ur floatbarrier
+\usepackage[shortlabels]{enumitem} 				% enumerate, itemize environment
+
+		%%%  zus\"atzlich  %%%
+\usepackage{amsmath}						% ams math package
+\numberwithin{equation}{section}			% Zeigt equation Nummerierung mit section-nummer (eq. 2.3 z.B.)
+%\usepackage{multirow}						% In Tabellen Zeilen zusammenf\"ugen
+\usepackage{amssymb}						% F\"ur Zahlenmengensymbole \mathbb{N} usw.
+%\usepackage[retainorgcmds]{IEEEtrantools}		% equation arrays (ben\"otigt IEEEtrantools.sty im selben Ordner)
+%\usepackage[arrow, matrix, curve]{xy}			% (z.B. short exact) sequences mit mehreren Zeilen
+%\usepackage{bbm}							% f\"ur \mathbbm{}: \mathbb{} f\"ur Zahlen 
+%\usepackage[toc,page]{appendix}				% Appendix machen
+%\usepackage{subfigure}				 		% Bilder manuell \"ubereinander/nebeneinander setzen
+%\usepackage{comment}						% F\"ur mehrzeilige Kommentare
+%\usepackage{pdfpages} 						% include whole pdf pages
+%\usepackage{gensymb}						% Symbole wie \degree
+
+% Geometrie manuell einstellen
+%\usepackage[a4paper]{geometry}
+%\geometry{a4paper,tmargin=3cm, bmargin=3cm, lmargin=3cm, rmargin=3cm, headheight=3em, headsep=1.5em, footskip=1cm}
+%\linespread{1.1}
+%\setlength{\parskip}{0.3em}
+\setlength{\parindent}{0pt}
+
+%==============================
+%head/foot
+%============================== 
+% \usepackage{fancyhdr} 						% alternativer header
+% \pagestyle{fancy}
+% \fancyhead[R]{D. Schwarz}
+% \fancyhead[L]{ETH Zurich - FS 15}
+% \setlength{\parskip}{1em}
+% \setlength{\parindent}{0pt}
+% \fancyfoot[C]{\thepage}
+
+\usepackage[automark]{scrlayer-scrpage}		% Packet fuer Kopf und Fusszeilen
+\pagestyle{scrheadings}					% Koma-Stil als Ersatz fuer heading-Stil
+\KOMAoptions{
+	headsepline=1pt,		% Linie unter Kopfzeile
+	footsepline=false		% keine Linie ueber Fusszeile
+}							
+\automark{section}
+% \clearscrheadfoot           % Loeschen der Kopf- und Fusszeile von heading und plain-Variablen
+% \lehead*{}%
+% \cehead*{useless text}%
+% \cohead*{usefull text}%
+% \rohead*{}%
+
+\bibliographystyle{agsm} % agsm = Harvard style
