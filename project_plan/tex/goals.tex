@@ -3,19 +3,19 @@ The implementation should be:
 \begin{enumerate}[(i)]
     \item high performance; two orders of magnitude improvement compared to both \cite{mehta2015break,newland2019CFM18}.
     \item modular; allow the user to choose between different fragmentation approaches, numerical integration schemes, degrees of randomness etc.
-    \item extensible; keep potential extensions in mind when deciding on code structure.
+    \item extensible; keep potential extensions in mind when deciding on code structure, make good documentation and tests.
     \item user friendly; easy install process, usage examples, detailed documentation, sensible parameter presets.
 \end{enumerate}
 
-Should it be the case that achieving these targets requires considerably more time than anticipated, we might shift the focus of this project entirely onto the goals outlined in sec.~\ref{sec:goal1}.
+Should it be the case that achieving these objectives requires considerably more time than anticipated, we might shift the focus of this project entirely onto the goals outlined in sec.~\ref{sec:goal1}.
 We could investigate further improving performance by making the code multi-threaded.
 
 If the milestones in sec.~\ref{sec:goal1} can be hit without significant delays, we will proceed with the second part (sec.~\ref{sec:goal2}). The objectives are as follows:
 \begin{enumerate}[(i)]
-    \item Gain a detailed overview of available MCMC methods.
+    \item Gain a detailed overview of available MCMC (or similar) methods.
     \item Implement a suitable cost function.
     \item Use MCMC for inversion of meteoroid mass, density, velocity, angle, and strength, while keeping internal structure fixed.
     \item Investigate including the internal structure into the inversion process.
 \end{enumerate}
 These items are ordered to be progressively more ambitious, and do not have to all be achieved.
-The priority is to gain and write down a detailed understanding of results at each step, rather than necessarily having some less detailed results for all objectives.
+The priority is to gain and document a detailed understanding of results at each step, rather than necessarily having some less detailed results for all objectives.

@@ -5,13 +5,13 @@ As a result of these processes, they typically produce clusters of impact crater
 
 The aim of this project is to invert impactor properties from data in a recent survey of Martian impact crater clusters \citep{daubar2019recently}.
 We will investigate whether stochastic inversion methods, such as Markov Chain Monte Carlo (MCMC), are a viable approach for this problem.
-MCMC models, such as the Gibbs sampler combined with the Metropolis-Hastings algorithm \citep{gelfand1990sampling}, have been a very popular black box inversion method in many research areas \citep[in epidemiology e.g.][]{flaxman2020estimating}.
-In order to use an MCMC method, a high-performance numerical model of atmospheric decent and crater cluster formation is needed.
+MCMC models, such as the Gibbs sampler combined with the Metropolis-Hastings algorithm \citep{gelfand1990sampling}, have been a very popular black box inversion method in many research areas \citep[e.g., in epidemiology][]{flaxman2020estimating}.
+In order to use an MCMC method, a high-performance numerical model of atmospheric descent and crater cluster formation is needed.
 
 A popular way of modeling these processes is to build on the standard meteor physics equations of motion and ablation \citep[e.g.][]{opik1958physics}, which are a set of ordinary differential equations (ODEs) treating the meteoroid as a homogeneous, spherical or ellipsoidal body.
 Break up is modeled to occur when the pressure difference between the leading edge and the trailing edge of the meteoroid exceeds the aerodynamic strength of the meteoroid material.
 % The pressure at the leading edge, behind the bow shock, is called the stagnation pressure. The pressure on the other end, in the meteoroid wake, is nearly zero \citep{passey1980effects}.
-The exact mechanism of break up is subject to ongoing research. Most break up models use either a ``pankake'' approach, or a discrete fragmentation approach \citep{register2017asteroid}.
+The exact mechanism of break up is subject to ongoing research. Most break up models use either a ``pancake'' approach, or a discrete fragmentation approach \citep{register2017asteroid}.
 % \cite{hills1993fragmentation} for example used a pancake approach to model energy deposition and airburst damage for various impactors on Earth. The discrete fragmentation approach was used for example by \cite{passey1980effects} to investigate strewn fields on Earth.
 
 More recently, a combination of the two approaches, called the fragment-cloud model (FCM), was proposed by \cite{wheeler2017fragmentcloud}.
@@ -23,10 +23,10 @@ In a subsequent publication, \cite{wheeler2018atmospheric} were able to demonstr
 
 \cite{newland2019CFM18} applied the FCM model and key conclusions from the \cite{wheeler2018atmospheric} paper to the formation of impact crater clusters on Mars.
 They were able to demonstrate that the FCM model, with the right parameters, was able to reproduce crater clusters with a similar distribution of certain characteristics compared to observations collected by \cite{daubar2019recently}.
-They also showed that simpler models, like the discrete fragmentation approach or the FCM model without varied initial structures, as first proposed by \cite{wheeler2017fragmentcloud}, were unable to reproduce the observed characteristics distributions.
+They also showed that simpler models, like the discrete fragmentation approach or the FCM model without varied initial structures, as first proposed by \cite{wheeler2017fragmentcloud}, were unable to reproduce the observed distributions of cluster characteristics.
 
-Seeing these promising results, we will use this model for our inversion problem.
-However, a key downside of MCMC inversion methods are their heavy computational costs.
+Based on these promising results, we will use the FCM model for our inversion problem.
+However, a key downside of MCMC inversion methods is their heavy computational costs.
 They typically run the underlying model thousands of times to generate an accurate input space distribution.
 In our case, the underlying FCM model is computationally demanding in its own right.
 Equations for potentially hundreds of fragments and debris clouds have to be solved numerically for each impact.

@@ -3,7 +3,7 @@
    %draft,     % faster rendering with grayscale only, no active links, placeholders for figures
    final,      % final document
 %%%% --- font size ---
-   fontsize=10pt,
+   fontsize=11pt,
    headings=small,
    %headings=normal,
    %headings=big,
@@ -92,7 +92,7 @@
 \publishers{%\vspace{3em}
    \small Imperial College London \\
    \small Royal School of Mines \\
-   \small Departement of Earth Science and Engineering \\
+   \small Department of Earth Science and Engineering \\
    \vspace{2em}
       \small Supervisor: \\
       \small Prof. Gareth Collins \\
@@ -111,10 +111,11 @@
 
 \begin{document}
 
+%%% Settings that need to be made after begin{document}
+\renewcommand\bf{\bfseries}  % fix for natbib using deprecated \bf command
+\setlength{\parindent}{1.5em} % paragraph indentation
 
 %%% Command definitions %%%
-\renewcommand\bf{\bfseries}  % fix for natbib using deprecated \bf command
-\setlength{\parindent}{1.5em}
 \newcommand{\unit}[1]{\,\mathrm{#1}}
 \newcommand{\e}[1]{\cdot 10^{#1}}
 \newcommand{\intd}[1]{\,\mathrm{d}#1}
@@ -165,7 +166,7 @@
 \section{Overview}
 
 \input{tex/intro}
-\clearpage
+%\clearpage
 
 \section{Project Plan}
 
