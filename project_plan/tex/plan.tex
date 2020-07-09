@@ -1,11 +1,11 @@
 This project is divided into two parts.
-First, the goal is to develop a high quality FCM implementation in C++ based on the work by \cite{newland2019CFM18}.
-Second, the aim is to estimate impactor properties from crater cluster data, using the FCM implementation from the first part combined with an MCMC inversion method.
+First, the goal is to develop a high quality FCM implementation in C++ based on the work by \cite{newland2019CFM18} (sec.~\ref{sec:goal1}).
+Second, the aim is to estimate impactor properties from crater cluster data, using the FCM implementation from the first part combined with an MCMC inversion method (sec.~\ref{sec:goal2}).
+An overview of all tasks and milestones is in table~\ref{tab:gantt}.
 
 \subsection{C++ FCM Implementation}
 \label{sec:goal1}
 The goal is to implement C++ numerical algorithms, which integrate all differential equations of the meteoroid and its fragments after breakup, along with a Python API.
-Milestones are listed in table~\ref{tab:milestones1}.
 In order to be able to predict impact crater locations in debris fields, all objects have to be simulated in three dimensional space.
 We will closely follow the work by \cite{newland2019CFM18}, who has already implemented three dimensional trajectory calculations.
 
@@ -14,34 +14,32 @@ Rather, it models these complex processes in a simplified form, based on results
 The aim is to have the results be a close enough approximation, while cutting down on computational complexity by reducing the entire process to a set of ODEs.
 
 As noted in \cite{newland2019CFM18}, the FCM can be simplified to replicate both a pure cloud model and a pure fragmentation model.
-The aim is to make the implementation modular s.t. it is possible to accommodate most flavours that people have been using in both classes of simpler models.
-Summaries can be found in \cite{artemieva1996interaction,artemieva2001motion,register2017asteroid,mcmullan2019uncertainty}.
+The aim is to make the implementation modular such that it is possible to accommodate most flavours of both classes of simpler models \cite{artemieva1996interaction,artemieva2001motion,register2017asteroid,mcmullan2019uncertainty}.
 Since all these models build on the standard meteoroid equations \citep[e.g.][]{opik1958physics}, the actual differences in implementation are somewhat minor.
 However, one thing that we have to look out for is that a poor implementation of these switches between different methods could dramatically decrease the cache hit rate, which typically has a significant impact on performance.
 
 % Contrary to what \cite{wheeler2017fragmentcloud} proposed and \cite{newland2019CFM18} then adopted, we will use an adaptive time stepping scheme for integrating the model's ODEs, rather than setting a fixed height step size (e.g. $\delta h = 10\unit{m}$ as proposed by \cite{wheeler2017fragmentcloud}). We think that this will be much more computationally efficient, while at the same time providing better accuracy. With \cite{wheeler2017fragmentcloud}'s approach, a lot of computation time is wasted early on in the simulation, when not much is happening in the thin upper atmosphere. Later in the simulation, at a given CPU time budget, the fixed step size $\delta h$ then limits the precision to which the important bits of the simulation, namely fragment breakup and debris cloud modeling, can be computed. We think that a continuous height step size $\delta h$ can be achieved much more efficiently by, after the simulation is finished, simply interpolating the resulting time series data with a higher order interpolation method such as cubic spline.
 
-\begin{table*}[htbp]
-    \textbf{Milestones for C++ FCM implementation:}\\[0.35em]
-    \begin{tabular}{r p{29em}}
-        \DTMDisplaydate{2020}{7}{10}{4} & Decide on feature set. \\
-        \DTMDisplaydate{2020}{7}{17}{4} & Have pure debris cloud version working in C++ with a Python API. \\
-        \DTMDisplaydate{2020}{7}{24}{4} & Have full model working, including break up. \\
-        \DTMDisplaydate{2020}{7}{31}{4} & Complete testing, documentation, and build \& deployment code.
-    \end{tabular}
-    \caption{Milestones for part one (sec~\ref{sec:goal1})\label{tab:milestones1}}
-\end{table*}
+% \begin{table*}[htbp]
+%     \textbf{Milestones for C++ FCM implementation:}\\[0.35em]
+%     \begin{tabular}{r p{29em}}
+%         \DTMDisplaydate{2020}{7}{10}{4} & Decide on feature set. \\
+%         \DTMDisplaydate{2020}{7}{17}{4} & Have pure debris cloud version working in C++ with a Python API. \\
+%         \DTMDisplaydate{2020}{7}{24}{4} & Have full model working, including break up. \\
+%         \DTMDisplaydate{2020}{7}{31}{4} & Complete testing, documentation, and build \& deployment code.
+%     \end{tabular}
+%     \caption{Milestones for part one (sec~\ref{sec:goal1})\label{tab:milestones1}}
+% \end{table*}
 
 \subsection{Crater Cluster Data Inversion}
 \label{sec:goal2}
 With the efficient code of part one, the goal is to investigate the inverse problem of estimating impactor properties from crater cluster data.
-Milestones are listed in table~\ref{tab:milestones2}.
 Crater cluster data from \cite{daubar2019recently} has already been used by \cite{newland2019CFM18}, and is readily available.
 We will first conduct a literature review about potential inversion methods.
 
 If we decide to use an MCMC method, a cost function is needed, which the algorithm will try to minimise.
 Since there is a lot of randomness involved in meteoroid break up, having the algorithm try to replicate the exact same crater cluster formation as in the input image is most probably ill-advised.
-A more promising approach seems to be to extract features from the crater cluster image, like \cite{newland2019CFM18} has done in his work, and try to estimate impactor properties that most likely result in a cluster with similar features.
+A more promising approach seems to be to extract features from the crater cluster image, such as \cite{newland2019CFM18} has done in his work, and try to estimate impactor properties that most likely result in a cluster with similar features.
 
 An important consideration is which impactor properties to invert for, and which ones to keep fixed.
 Necessarily variable are the meteoroid mass, radius, and its velocity and angle relative to the planet's surface at the start of atmospheric entry. These are all continuous parameters.
@@ -51,13 +49,56 @@ Most of the parameters for internal composition of impactors, as laid out in \ci
 
 Overall, this part of the project is highly exploratory in nature. At first, the focus will be on finding a small set of variable parameters for which we can find an inversion method, together with a suitable cost function, that actually converges. If time permits, we will investigate expanding the set of variable parameters.
 
+% \begin{table*}[htbp]
+%     \textbf{Milestones for crater cluster inversion:}\\[0.35em]
+%     \begin{tabular}{r p{29em}}
+%         \DTMDisplaydate{2020}{7}{31}{4} & Decide which flavour(s) of inversion algorithms to use. \\
+%         \DTMDisplaydate{2020}{8}{7}{4} & Decide on which cost function to use, have it working for a given cater cluster. \\
+%         \DTMDisplaydate{2020}{8}{14}{4} & Decide which impactor parameters to invert. \\
+%         \DTMDisplaydate{2020}{8}{21}{4} & Wrap up inversion calculations, tidy up the code (documentation and tests).
+%     \end{tabular}
+%     \caption{Milestones for part two (sec~\ref{sec:goal2})\label{tab:milestones2}}
+% \end{table*}
+
 \begin{table*}[htbp]
-    \textbf{Milestones for crater cluster inversion:}\\[0.35em]
-    \begin{tabular}{r p{29em}}
-        \DTMDisplaydate{2020}{7}{31}{4} & Decide which flavour(s) of inversion algorithms to use. \\
-        \DTMDisplaydate{2020}{8}{7}{4} & Decide on which cost function to use, have it working for a given cater cluster. \\
-        \DTMDisplaydate{2020}{8}{14}{4} & Decide which impactor parameters to invert. \\
-        \DTMDisplaydate{2020}{8}{21}{4} & Wrap up inversion calculations, tidy up the code (documentation and tests).
-    \end{tabular}
-    \caption{Milestones for part two (sec~\ref{sec:goal2})\label{tab:milestones2}}
+    \centering
+    \begin{ganttchart}[
+        vgrid,
+        y unit chart=1.5em,
+        x unit=2em,
+        %group top shift=.6,
+        bar label font=\normalsize\color{black!60},
+        milestone label font=\normalsize\color{black!60},
+        group/.append style={draw=black, fill=black!70},
+    ]{1}{9}
+        \gantttitle{July}{5} \gantttitle{August}{4} \\
+        \gantttitlelist{1,...,9}{1} \\
+        
+        %\ganttgroup[group/.append style={draw=black, fill=yellow}]{Getting started}{1}{3} \\
+        \ganttgroup{Getting started}{1}{3} \\
+        \ganttbar[bar/.append style={fill=yellow}]{Read into existing models}{1}{3}\\
+        \ganttbar[bar/.append style={fill=yellow}]{Make Project Plan}{1}{2} \\
+        \ganttmilestone[milestone/.append style={fill=yellow}]{Project Plan Submission}{2} \\
+        
+        \ganttgroup{C++ FCM implementation}{3}{5} \\
+        \ganttbar[bar/.append style={fill=blue!50}]{Python API}{3}{4} \\
+        \ganttbar[bar/.append style={fill=blue!50}]{FCM model without fragmentation}{3}{3} \\
+        \ganttbar[bar/.append style={fill=blue!50}]{Fragmentation}{4}{4} \\
+        \ganttbar[bar/.append style={fill=blue!50}]{Documentation \& Testing}{4}{5} \\
+        \ganttmilestone[milestone/.append style={fill=blue!50}]{FCM software ready}{5} \\
+        
+        \ganttgroup{Crater cluster inversion}{5}{8} \\
+        \ganttbar[bar/.append style={fill=green}]{Read into MCMC methods}{5}{6} \\
+        \ganttbar[bar/.append style={fill=green}]{Research/implement cost function}{6}{7} \\
+        \ganttmilestone[milestone/.append style={fill=green}]{Fix cost function}{7} \\
+        \ganttbar[bar/.append style={fill=green}]{Invert with fixed meteoroid structure}{7}{8} \\
+        \ganttbar[bar/.append style={fill=green}]{Variable meteoroid structure}{8}{8} \\
+        \ganttmilestone[milestone/.append style={fill=green}]{Wrap up inversion results}{8} \\
+        
+        \ganttgroup{Write reports}{5}{9} \\
+        \ganttbar[bar/.append style={fill=red!50}]{User/developer guide}{5}{6} \\
+        \ganttbar[bar/.append style={fill=red!50}]{Thesis}{7}{9} \\
+        \ganttmilestone[milestone/.append style={fill=red!50}]{Final submission}{9}
+    \end{ganttchart}
+    \caption{Project milestones\label{tab:gantt}}
 \end{table*}
