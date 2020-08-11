@@ -1,0 +1,77 @@
+\subsection{Fragmentation}
+
+In our model, we adopt the separate fragments approach first proposed by \cite{passey1980effects}.
+They derived that after fragmentation, when both the rest of the bolide and the new fragment are traveling under separate bow shocks, 
+the fragment will have an additional transverse velocity $V_T$ perpendicular to the bolide trajectory before framgentation.
+Under the assumption that both the fragment and the bolide are spherical objects,
+\cite{passey1980effects} derived that
+\begin{equation}
+    V_T = \sqrt{\frac{3}{2}C\frac{R_b}{R_f}\frac{\rho_a}{\rho_f}}V_i\,,
+    \label{eq:v_t}
+\end{equation}
+where $C$ is a dimensionless factor, $R_b$ is the radius of the remaining bolide after fragmentation,
+$R_f$ is the radius of the new fragment, $\rho_a$ is the air density, $\rho_f$ is the density of the new fragment,
+and $V_i$ is the velocity of the bolide just before fragmentation.
+
+In our model, we assign a random direction to $V_T$ in the plane perpendicular to the current bolide trajectory.
+In order to adhere to momentum conservation, a velocity
+\begin{equation}
+    V_T^* = \frac{m_2}{m_1}V_T
+    \label{eq:v_t_star}
+\end{equation}
+is added, in the opposite direction, to the remaining bolide velocity.
+$m_1$ and $m_2$ are the remaining bolide and fragment mass respectively.
+
+In order to add $V_T$ and $V_T^*$ to the velocity $v$ of the bolide before fragmentation,
+we have to calculate its components in our coordinate system.
+Recall that in our coordinates $(v, \theta, \phi)$,
+\begin{equation*}
+    \pmb{v} = v \begin{pmatrix}
+        \cos(\theta)\cos(\phi) \\
+        \cos(\theta)\sin(\phi) \\
+        -\sin(\theta)
+    \end{pmatrix}.
+\end{equation*}
+We define $\pmb{e}_1 = \frac{\pmb{v}}{v}$.
+In order to get an orthonormal basis of the plane perpendicular to $\pmb{v}$, we first rotate $\pmb{v}$ by $\frac{\pi}{2}$:
+\begin{equation*}
+    \pmb{e}_2 = \begin{pmatrix}
+        \cos\left(\theta - \frac{\pi}{2}\right)\cos(\phi) \\
+        \cos\left(\theta - \frac{\pi}{2}\right)\sin(\phi) \\
+        -\sin\left(\theta - \frac{\pi}{2}\right)
+    \end{pmatrix} = \begin{pmatrix}
+        \sin(\theta)\cos(\phi) \\
+        \sin(\theta)\sin(\phi) \\
+        \cos(\theta)
+    \end{pmatrix}
+\end{equation*}
+Finally, we calculate the cross product
+\begin{align*}
+    \pmb{e}_3 &= \pmb{e}_1 \times \pmb{e}_2 \\
+    &= \begin{pmatrix}
+        \cos(\theta)\cos(\phi) \\
+        \cos(\theta)\sin(\phi) \\
+        -\sin(\theta)
+    \end{pmatrix} \times \begin{pmatrix}
+        \sin(\theta)\cos(\phi) \\
+        \sin(\theta)\sin(\phi) \\
+        \cos(\theta)
+    \end{pmatrix} \\
+    &= \begin{pmatrix}
+        \cos(\theta)^2\sin(\phi) + \sin(\theta)^2\sin(\phi) \\
+        -\sin(\theta)^2\cos(\phi) - \cos(\theta)^2\cos(\phi) \\
+        0
+    \end{pmatrix} \\
+    &= \begin{pmatrix}
+        \sin(\phi) \\
+        -\cos(\phi) \\
+        0
+    \end{pmatrix}
+\end{align*}
+Like this, we have found a orthonormal basis $(\pmb{e}_2, \pmb{e}_3)$ for the plane perpendicular to $v$.
+
+Now we can choose a random angle $\alpha \in [0, 2\pi)$ and calculate the fragment and bolide velocities $\pmb{v}_f$ and $\pmb{v}_b$ after fragmentation like so:
+\begin{align}
+    \pmb{v}_f &= \pmb{v} + V_T[\cos(\alpha)\pmb{e}_2 + \sin(\alpha)\pmb{e}_3]\,,\\
+    \pmb{v}_b &= \pmb{v} - V_T^*[\cos(\alpha)\pmb{e}_2 + \sin(\alpha)\pmb{e}_3]\,.
+\end{align}

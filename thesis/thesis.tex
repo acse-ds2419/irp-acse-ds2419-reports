@@ -1,0 +1,181 @@
+% Imperial College ACSE 2019/20 IRP Report
+\documentclass[%
+   draft,     % faster rendering with grayscale only, no active links, placeholders for figures
+   %final,      % final document
+%%%% --- font size ---
+   fontsize=10pt,
+   headings=small,
+   %headings=normal,
+   %headings=big,
+%%%% --- Language ---
+   british,          % forwarded to other packages
+%%%% === Page size ===
+   paper=a4,         % letter, legal, executive, a4, a5
+   % landscap,
+%%%% === Options for text positioning ===
+   BCOR=5mm,          % More margin on the book inside if twosided
+   DIV=11,            % page size (see Koma Skript docs!)
+   headlines=1.1,     % num lines in header
+   headinclude=false,% include header in page size
+   footinclude=false,% include footer in page size
+   mpinclude=false,  % include margin in page size
+   pagesize,         % writes page dimensions into pdf file; important for conversions
+%%%% === Layout ===
+   oneside,
+   %twoside,
+   %onecolumn,
+   twocolumn,
+   %openany,         % start chapter on any side
+   %openright,       % start chapter only on right any side
+                     % (macht nur bei 'twoside' Sinn)
+   %cleardoubleplain,% leere, linke Seite mit Seitenstil 'plain'
+   %cleardoubleempty,% leere, linke Seite mit Seitenstil 'empty'
+   %titlepage,        % title as separate page (use 'titlepage' environment)
+   notitlepage,     % include title on first page
+%%%% --- Paragraph indentation ---
+   %                 % Absatzabstand: Einzeilig,
+   %parskip,         % Freiraum in letzter Zeile: 1em
+   %parskip*,        % Freiraum in letzter Zeile: Viertel einer Zeile
+   %parskip+,        % Freiraum in letzter Zeile: Drittel einer Zeile
+   %parskip-,        % Freiraum in letzter Zeile: keine Vorkehrungen
+   %                 % Absatzabstand: Halbzeilig
+   %halfparskip,     % Freiraum in letzter Zeile: 1em
+   %halfparskip*,    % Freiraum in letzter Zeile: Viertel einer Zeile
+   %halfparskip+,    % Freiraum in letzter Zeile: Drittel einer Zeile
+   %halfparskip,     % Freiraum in letzter Zeile: keine Vorkehrungen
+   %                 % Absatzabstand: keiner
+   parskip=false,    % Eingerueckt (Standard)
+                     % true, full-,full+, full*, half, half-,half+,half*                                    
+%%%% --- Kolumnentitel ---
+   %headsepline,      % Linie unter Kolumnentitel
+   headsepline=false, % keine Linie unter Kolumnentitel
+   %footsepline,     % Linie unter Fussnote
+   %footnosepline,   % keine Linie unter Fussnote
+%%%% --- Kapitel ---
+   %chapterprefix,   % Ausgabe von 'Kapitel:'
+   %nochapterprefix,  % keine Ausgabe von 'Kapitel:'
+%%%% === Verzeichnisse (TOC, LOF, LOT, BIB) ===
+   %toc=listof,      % Tabellen & Abbildungsverzeichnis ins TOC   
+   %toc=index,       % Index ins TOC
+   %toc=left,        % Tabellenartige TOC
+   toc=graduated,    % eingereuckte Gliederung
+   bibliography=totoc,% Bibliographie ins TOC
+   %toc=bibnumbered, % Bibliographie im TOC nummeriert
+   toc=listofnumbered, % Alle Verzeichnisse im TOC nummeriert
+   listof=graduated, % eingereuckte LOT, LOF
+   %listsleft,       % Tabellenartige LOT, LOF
+   %pointednumbers,  % Ueberschriftnummerierung mit Punkt, siehe DUDEN !
+   numbers=noenddot, % Ueberschriftnummerierung ohne Punkt, siehe DUDEN !
+   %openbib,         % alternative Formatierung des Literaturverzeichnisses
+%%%% === Matheformeln ===
+   %leqno,           % Formelnummern links
+   %fleqn,            % Formeln werden linksbuendig angezeigt
+]{scrartcl}%     Klassen: scrartcl, scrreprt, scrbook
+
+% Packages
+\input{tex/preamble}
+
+% title page
+\titlehead{\centering ACSE-9 Independent Research Project}
+\title{Inference of Impactor Properties by Inversion of \\
+       Meteoroid Impact Clusters on Mars \\
+       with a Fragment-Cloud Model} 
+\author{\small Dominic Schwarz \\
+        \small dominic.schwarz19@imperial.ac.uk \\
+        \small \url{github.com/acse-ds2419}}
+\date{\today}
+%\uppertitleback{\copyright 2014 D. Hennig}
+%\lowertitleback{Ubuntu-Version}
+\publishers{\small{%
+   Imperial College London \\
+   Royal School of Mines \\
+   Department of Earth Science and Engineering \\
+   \vspace{2em}
+   Supervisor: \\
+   Prof. Gareth Collins \\
+   g.collins@imperial.ac.uk \\
+   \vspace{2em}
+   Project repository: \\
+   \url{https://github.com/acse-2019/irp-acse-ds2419} \\
+   \vspace{2em}
+   Submitted as part of the MSc course in \\
+   Applied Computational Science and Engineering. \\
+}
+}
+%\dedication{Widmung}
+%\extratitle{Schmutztitel}
+
+\begin{document}
+
+%%% Settings that need to be made after begin{document}
+\renewcommand\bf{\bfseries}  % fix for natbib using deprecated \bf command
+\setlength{\parindent}{1.5em} % paragraph indentation
+
+%%% Command definitions %%%
+\newcommand{\unit}[1]{\,\mathrm{#1}}
+\newcommand{\e}[1]{\cdot 10^{#1}}
+\newcommand{\intd}[1]{\,\mathrm{d}#1}
+\newcommand{\parnorm}[1]{\frac{\partial}{\partial #1}}
+\newcommand{\parnormp}[2]{\frac{\partial^#2}{\partial #1^#2}}
+\newcommand{\parfrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\parfracp}[3]{\frac{\partial^#3 #1}{\partial #2^#3}}
+
+
+%%% Titlepage %%%
+
+\maketitle
+%\begin{abstract}
+%\noindent
+%This is the abstract.
+%\end{abstract}
+
+
+%%% Manual Titlepage %%%
+
+%\thispagestyle{plain}
+%\vspace*{1cm}
+%\begin{center}
+%	\Huge{Description of Galactic, Star Forming Disks with the Accretion Disk Formalism}\\[1cm]
+%	\Large{Dominic Schwarz}\\
+%	\emph{ETH Z\"urich}\\[.7cm]
+%	\today\\[3cm]
+	
+%	\section*{\large Abstract}
+%\end{center}
+
+%\input{tex/abstract}
+%\clearpage
+
+
+%%% Table of Contents %%%
+
+%\setlength{\parskip}{0em}
+%\linespread{1.0}
+%\tableofcontents
+%\setlength{\parskip}{0.3em}
+%\linespread{1.1}
+%\clearpage
+
+
+%%% Content %%%
+
+\section{Derivations}
+
+\input{tex/derivations}
+
+\FloatBarrier
+
+
+%%% Appendix %%%
+
+%\appendix
+%\section*{Appendices}
+%\input{tex/appendices}
+
+
+%%% Bibliography %%%
+%\onecolumn{
+   \bibliography{sources}
+%}
+
+\end{document}
