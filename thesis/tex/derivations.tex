@@ -21,7 +21,7 @@ for some scale height $H$, which is itself a function of $z$. It's safe to assum
 Now, since $\Delta z \ll H(z_k)$, we can use the Taylor approximation:
 \begin{align*}
     e^\alpha &= 1 + \alpha + \mathcal{O}(\alpha^2) \\
-    \Rightarrow\ \rho_a(z_k)e^{-\Delta z / H} &= \rho_a(z_k)\left(1 - \frac{\Delta z}{H} + \mathcal{O}\left[\left(\frac{\Delta z}{H}\right)^2\right]\right)
+    \Rightarrow\ \rho_a(z_k + \Delta z) &= \rho_a(z_k)\left(1 - \frac{\Delta z}{H} + \mathcal{O}\left[\left(\frac{\Delta z}{H}\right)^2\right]\right)
 \end{align*}
 Second,
 \begin{equation*}
@@ -31,22 +31,26 @@ Now, in order to find a relationship between $\Delta z$ and $\Delta v$, recall t
 \begin{equation*}
      \frac{dz}{dt} = -\sin(\theta) v\ \Rightarrow\ \Delta z = -\sin(\theta_k) v_k\Delta t\,.
 \end{equation*}
-Now $\Delta t= \frac{\Delta v}{v_k - v_{k-1}}(t_k - t_{k-1})$.
+Now $\Delta t= \frac{\Delta v}{v_k - v_{k-1}}(t_k - t_{k-1})$
 \begin{equation*}
-    \Rightarrow\ \Delta z = -v_k\sin(\theta_k)\frac{v_k - v_{k-1}}{t_k - t_{k-1}}
+    \Rightarrow\ \Delta z = -v_k\sin(\theta_k)\Delta v\frac{t_k - t_{k-1}}{v_k - v_{k-1}}
 \end{equation*}
 Putting it all together, we get:
 \begin{align*}
     \sigma &= \rho_a(z_k + \Delta z)\left(v_k + \Delta v\right)^2 \\
-    &= \rho_a(z_k)\left(1 + \frac{v_k\sin(\theta)\Delta v}{H}\frac{v_k - v_{k-1}}{t_k - t_{k-1}} + \mathcal{O}(\Delta v^2)\right)(v_k^2 + 2v_k\Delta v + \mathcal{O}(\Delta v^2)) \\
-    &= \rho_a(z_k)v_k^2 + 2\rho_a(z_k)v_k\Delta v + \rho_a(z_k)v_k^2 \frac{v_k\sin(\theta)\Delta v}{H}\frac{v_k - v_{k-1}}{t_k - t_{k-1}} + \mathcal{O}(\Delta v^2)
+    &= \rho_a(z_k)\left(1 + \frac{v_k\sin(\theta)\Delta v}{H}\frac{t_k - t_{k-1}}{v_k - v_{k-1}} + \mathcal{O}(\Delta v^2)\right)(v_k^2 + 2v_k\Delta v + \mathcal{O}(\Delta v^2)) \\
+    &= \rho_a(z_k)v_k^2 + 2\rho_a(z_k)v_k\Delta v + \rho_a(z_k)v_k^2 \frac{v_k\sin(\theta)\Delta v}{H}\frac{t_k - t_{k-1}}{v_k - v_{k-1}} + \mathcal{O}(\Delta v^2)
 \end{align*}
 Let $\mathrm{rp} := \rho_a(z_k)v_k^2$. Then
 \begin{align*}
-    \sigma &= \mathrm{rp} + 2\mathrm{rp}\frac{\Delta v}{v_k} + \mathrm{rp}\frac{v_k\sin(\theta)\Delta v}{H}\frac{v_k - v_{k-1}}{t_k - t_{k-1}} \\
-    \Rightarrow\ \frac{\sigma - \mathrm{rp}}{\mathrm{rp}} &= \Delta v \left(\frac{2}{v_k} + \frac{v_k\sin(\theta_k)}{H}\frac{v_k - v_{k-1}}{t_k - t_{k-1}}\right)
+    \sigma &= \mathrm{rp} + 2\mathrm{rp}\frac{\Delta v}{v_k} + \mathrm{rp}\frac{v_k\sin(\theta)\Delta v}{H}\frac{t_k - t_{k-1}}{v_k - v_{k-1}} \\
+    \Rightarrow\ \frac{\sigma - \mathrm{rp}}{\mathrm{rp}} &= \Delta v \left(\frac{2}{v_k} + \frac{v_k\sin(\theta_k)}{H}\frac{t_k - t_{k-1}}{v_k - v_{k-1}}\right)
 \end{align*}
-With this expression for $\Delta v$, we can revert back part of the last iteration. We repeat this process until the difference between $\mathrm{rp}$ and $\sigma$ is within our tolerance.
+With this expression for $\Delta v$, we can revert back part of the last iteration. We repeat this process until the difference between $\mathrm{rp}$ and $\sigma$ is within our tolerance. In the code specifically, the expression for $\Delta t$ is used:
+\begin{align}
+    \Delta t &= \Delta v \frac{t_k - t_{k-1}}{v_k - v_{k-1}} \nonumber \\
+    &= \left(\frac{\sigma}{\mathrm{rp}} - 1\right) \left(\frac{2}{v_k}\frac{v_k - v_{k-1}}{t_k - t_{k-1}} + \frac{v_k\sin(\theta_k)}{H}\right)^{-1}
+\end{align}
 
 \subsection{Fragmentation}
 
@@ -235,7 +239,7 @@ Thus, the meteoroid physics equations for a spherical planet are (where there ar
 \begin{equation}
     \Rightarrow \quad \frac{dS}{dt} = \frac{d}{dt}\left(\pi r^2\right) = 2\pi r \frac{dr}{dt}\,.
 \end{equation}
-With this, we can transform eq.~10 in \cite{avramenko2014simulation} for $\frac{dS}{dt}$ to an expression for $\frac{dr}{dt}$.
+With this, we can transform eq.~10 in \cite{avramenko2014simulation} for $\frac{dS}{dt}$ into an expression for $\frac{dr}{dt}$.
 For $\rho_a v^2 < \sigma_*$,
 \begin{align}
     \frac{dS}{dt} &= \frac{2}{3} \frac{S}{m} \frac{dm}{dt} \nonumber\\
@@ -257,8 +261,8 @@ Let $r$ be the distance from the point of impact to the planet's centre, project
 \end{equation*}
 where $R_p$ is the planet radius. Let $\varphi$ be the counter-clockwise angle of the point of impact. Then the likelihood of $\theta$ being smaller than an angle $\theta_0$ is
 \begin{align}
-    \mathcal{L}(\theta \leq \theta_0) &= \frac{1}{\pi R_p^2} \int_{R\cos(\theta_0)}^R \int_0^{2\pi} r d\varphi dr \nonumber\\
-    &= \frac{1}{\pi R_p^2} \int_{R\cos(\theta_0)}^R 2\pi r dr = \frac{2}{R_p^2} \left[\frac{r^2}{2}\right]_{R\cos(\theta_0)}^R \nonumber\\
+    \mathcal{L}(\theta \leq \theta_0) &= \frac{1}{\pi R_p^2} \int_{R_p\cos(\theta_0)}^{R_p} \int_0^{2\pi} r d\varphi\, dr \nonumber\\
+    &= \frac{1}{\pi R_p^2} \int_{R\cos(\theta_0)}^R 2\pi r\, dr = \frac{2}{R_p^2} \left[\frac{r^2}{2}\right]_{R_p\cos(\theta_0)}^{R_p} \nonumber\\
     &= 1 - \cos(\theta_0)^2 = \sin(\theta_0)^2
 \end{align}
 The probability density function is:
