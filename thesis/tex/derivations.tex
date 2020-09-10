@@ -1,5 +1,5 @@
-\subsection{Avoiding overshooting the break up moment}
-
+\section{Avoiding overshooting the break up moment}
+\label{sec:overshoot}
 In our model, we assume that a meteoroid fragments when its aerodynamic strength $\sigma$ is exceeded by the difference in air pressure between opposing sides. The biggest pressure differential will be between the leading edge and trailing edge. The pressure at the leading edge, behind the bow shock, is called the stagnation pressure. The pressure on the other end, in the meteoroid wake, is nearly zero \citep{passey1980effects}. Therefore break up will occur when
 \begin{equation}
     \rho_a v^2 = \sigma\,,
@@ -52,8 +52,8 @@ With this expression for $\Delta v$, we can revert back part of the last iterati
     &= \left(\frac{\sigma}{\mathrm{rp}} - 1\right) \left(\frac{2}{v_k}\frac{v_k - v_{k-1}}{t_k - t_{k-1}} + \frac{v_k\sin(\theta_k)}{H}\right)^{-1}
 \end{align}
 
-\subsection{Fragmentation}
-
+\section{Fragmentation}
+\label{sec:frag_detail}
 In our model, we adopt the separate fragments approach first proposed by \cite{passey1980effects}.
 They derived that after fragmentation, when both the rest of the bolide and the new fragment are traveling under separate bow shocks, 
 the fragment will have an additional transverse velocity $V_T$ perpendicular to the bolide trajectory before fragmentation.
@@ -61,7 +61,6 @@ Under the assumption that both the fragment and the bolide are spherical objects
 they derived that
 \begin{equation}
     V_T = \sqrt{\frac{3}{2}C\frac{R_b}{R_f}\frac{\rho_a}{\rho_f}}V_i\,,
-    \label{eq:v_t}
 \end{equation}
 where $C$ is a dimensionless factor, $R_b$ is the radius of the remaining bolide after fragmentation,
 $R_f$ is the radius of the new fragment, $\rho_a$ is the air density, $\rho_f$ is the density of the new fragment,
@@ -72,7 +71,6 @@ In order to adhere to momentum conservation, velocities
 \begin{align}
     V_T^f &= \frac{m_b}{m_b + m_f}V_T \\
     V_T^b &= \frac{m_f}{m_b + m_f}V_T
-    \label{eq:v_t_star}
 \end{align}
 are added to the two bodies in opposing directions.
 $m_f$ and $m_b$ are the new fragment mass and the remaining bolide mass respectively.
@@ -142,8 +140,8 @@ and
 \end{align*}
 exactly as we wanted.
 
-\subsection{Meteoroid physics equations for a spherical planet}
-
+\section{Meteoroid physics equations for a spherical planet}
+\label{sec:meteoroid_eq_deriv}
 In our model, we describe a meteoroid with the following variables: Its mass $m$, velocity $v$, and cross-sectional radius $r$. We assume that the meteoroid always has an ellipsoidal shape and travels in a maximum drag orientation. Then the area projected onto the plane perpendicular to the trajectory is always circular. $r$ is defined to be the radius of this projected circular area.
 
 The position and orientation of the meteoroid are described with the following coordinates: $(x, y, z, \theta, \phi)$. $z$ is the height above sea level, $x$ is the downrange distance projected onto the planet's surface, $y$ is the distance of the meteoroid from its original projected straight path, again projected onto the planet's surface. $\phi$ is the trajectory angle in the $xy$ plane, $\theta$ is the trajectory angle w.r.t. the $xy$ plane. A horizontal trajectory has an angle $\theta = 0$, and we define $\theta = \frac{\pi}{2}$ to indicate that the velocity vector points straight downward along the $z$ axis.
@@ -233,8 +231,8 @@ Thus, the meteoroid physics equations for a spherical planet are (where there ar
     \frac{dy}{dt} &= v\cos(\theta)\sin(\phi) \frac{R_p}{R_p + z}
 \end{align}
 
-\subsection{Radius differential equation in the Chain Reaction Model}
-
+\section{Radius differential equation in the Chain Reaction Model}
+\label{sec:CRM_details}
 \cite{avramenko2014simulation} describe their equations in terms of the effective cross-section $S$, that is the projected area of the bolide onto the plane perpendicular to its trajectory. In our equations, we work with a closely related value $r$. $r$ is the radius of the projected area, which under our model assumptions is always circular. Therefore, $S = \pi r^2$.
 \begin{equation}
     \Rightarrow \quad \frac{dS}{dt} = \frac{d}{dt}\left(\pi r^2\right) = 2\pi r \frac{dr}{dt}\,.
@@ -244,6 +242,7 @@ For $\rho_a v^2 < \sigma_*$,
 \begin{align}
     \frac{dS}{dt} &= \frac{2}{3} \frac{S}{m} \frac{dm}{dt} \nonumber\\
     \Rightarrow\ \frac{dr}{dt} &= \frac{1}{2\pi r} \frac{2}{3} \frac{\pi r^2}{m} \frac{dm}{dt} = \frac{r}{3m} \frac{dm}{dt}\,,
+    \label{eq:CRM_derivation_1}
 \end{align}
 and for $\rho_a v^2 > \sigma_*$,
 \begin{align}
@@ -251,8 +250,15 @@ and for $\rho_a v^2 > \sigma_*$,
     \Rightarrow\ \frac{dr}{dt} &= \frac{r}{3m} \frac{dm}{dt} + \frac{\pi r^2}{2\pi r} C_\mathrm{fr}\frac{\sqrt{\rho_a v^2 - \sigma_*}}{m^{1/3}\rho_m^{1/6}} \nonumber\\
     &= \frac{r}{3m} \frac{dm}{dt} +  C_\mathrm{fr} \frac{r}{2} \frac{\sqrt{\rho_a v^2 - \sigma_*}}{m^{1/3}\rho_m^{1/6}}\,.
 \end{align}
+Equation~\ref{eq:CRM_derivation_1} incidentally can also be derived with the following assumptions: If the meteoroid of mass $m$ and density $\rho$ is assumed to always have a perfectly spherical shape of radius $r$, then
+\begin{align*}
+    r(m) &= \left(\frac{3}{4\pi}\frac{m}{\rho}\right)^{1/3} \\
+    \Rightarrow \frac{dr}{dt} &= \frac{1}{3}\left(\frac{3}{4\pi}\frac{m}{\rho}\right)^{-2/3}\frac{3}{4\pi}\frac{1}{\rho}\frac{dm}{dt} \\
+    &= \frac{1}{4\pi\rho r^2}\frac{dm}{dt}\,,
+\end{align*}
+which is the same as eq.~\ref{eq:CRM_derivation_1} since $4\pi\rho r^2 = 3\frac{m}{r}$.
 
-\subsection{Atmospheric entry angles}
+\section{Atmospheric entry angles}
 For a meteoroid on a straight collision trajectory with a planetary body, the planetary surface appears like a circle. We assume that the probability of impact is equally distributed over this projected area. We can therefore calculate the expected distribution of atmospheric entry angles $\theta$.
 
 Let $r$ be the distance from the point of impact to the planet's centre, projected onto this circle. At a given $r$, the atmospheric entry angle is

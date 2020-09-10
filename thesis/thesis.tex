@@ -3,7 +3,7 @@
    %draft,     % faster rendering with grayscale only, no active links, placeholders for figures
    final,      % final document
 %%%% --- font size ---
-   fontsize=10pt,
+   fontsize=11pt,
    headings=small,
    %headings=normal,
    %headings=big,
@@ -14,7 +14,7 @@
    % landscap,
 %%%% === Options for text positioning ===
    BCOR=5mm,          % More margin on the book inside if twosided
-   DIV=11,            % page size (see Koma Skript docs!)
+   DIV=15,            % page size (see Koma Skript docs!)
    headlines=1.1,     % num lines in header
    headinclude=false,% include header in page size
    footinclude=false,% include footer in page size
@@ -77,9 +77,9 @@
 
 % title page
 \titlehead{\centering ACSE-9 Independent Research Project}
-\title{Inference of Impactor Properties by Inversion of \\
-       Meteoroid Impact Clusters on Mars \\
-       with a Fragment-Cloud Model} 
+\title{Inversion of Meteoroid Properties from \\
+       Impact Crater Clusters on Mars \\
+       with a Fragment-Cloud Model}
 \author{\small Dominic Schwarz \\
         \small dominic.schwarz19@imperial.ac.uk \\
         \small \url{github.com/acse-ds2419}}
@@ -87,6 +87,7 @@
 %\uppertitleback{\copyright 2014 D. Hennig}
 %\lowertitleback{Ubuntu-Version}
 \publishers{\small{%
+   \vspace{2em}
    Imperial College London \\
    Royal School of Mines \\
    Department of Earth Science and Engineering \\
@@ -159,24 +160,32 @@
 
 %%% Content %%%
 
-\onecolumn{
-\section{Derivations}
-\input{tex/derivations}
-}
+\section{Forward Model}
+\input{tex/model}
 
+\section{Crater Cluster Characteristics}
+\input{tex/cost_function}
+
+%%% Bibliography %%%
 \FloatBarrier
+
+\bibliography{sources}
+
+\clearpage
 
 
 %%% Appendix %%%
 
-%\appendix
-%\section*{Appendices}
-%\input{tex/appendices}
+\onecolumn{
+\appendix
+\section*{Appendices}
+\input{tex/derivations}
+}
 
 
-%%% Bibliography %%%
+
 %\onecolumn{
-   \bibliography{sources}
+
 %}
 
 \end{document}
