@@ -96,12 +96,12 @@ At a given angle, most samples are within a band close to the lower bound, excep
 $D_\mathrm{eff}$ also provides useful information about the strength of the largest piece ($\sigma_c$ in tab.~\ref{tab:eric_inner_structure}) in our inner structure. Figure~\ref{fig:d_eff_vs_strength} shows that at a given meteoroid mass, there is an upper limit to the effective diameter that the cluster can have, and that this limit increases for higher core strengths.
 The same pattern cannot be observed for the strengths of the other structural groups. This is probably because the effective diameter is dominated by the largest craters produced by the largest pieces, which will be produced by fragments of the strongest group.
 
-\begin{figure*}
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/d_eff_vs_strength}
+    \includegraphics[width=0.45\textwidth]{figures/d_eff_vs_strength}
     \caption{Effective diameter vs. core strength ($\sigma_c$ in tab.~\ref{tab:eric_inner_structure}). The colour code corresponds to the meteoroid mass in kg. We can see that at a given mass, $\sigma_c$ and effective diameter are correlated.}
     \label{fig:d_eff_vs_strength}
-\end{figure*}
+\end{figure}
 
 Overall, we conclude that $D_\mathrm{eff}$ provides useful information about the meteoroid mass and strength, and constrains the most likely values even better if other measures are taken into account that restrict the trajectory angle and meteoroid strength. The analysis with variable RNG seeds shows that it is by far the most stable characteristic out of the ones we considered. The relative variability is of the order of $1 - 2\%$ in all scenarios that we looked at.
 
@@ -111,12 +111,12 @@ It was proposed in the \cite{daubar2019recently} survey as a proxy for the initi
 There are several ways to compute this ratio. In this study, we use principal component analysis (PCA).
 The ratio of variances explained by the two principal components is equal to the aspect ratio. In order to limit the influence of outlier craters, we average the result over a number of bootstrapped samples. An example of a best-fit ellipse around a crater cluster can be seen in fig.~\ref{fig:ellipse_example}.
 
-\begin{figure*}
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/aspect_vs_angle}
+    \includegraphics[width=0.45\textwidth]{figures/aspect_vs_angle}
     \caption{Aspect ratio vs initial trajectory angle. The orange line indicates the relationship proposed in \cite{daubar2019recently}.}
     \label{fig:aspect_vs_angle}
-\end{figure*}
+\end{figure}
 
 Figure~\ref{fig:aspect_vs_angle} shows the connection between the two. We can see that, similar to what was proposed in \cite{daubar2019recently}, the dispersion is almost independent of $\theta$ for angles above $\sim$40 degrees.
 For shallower angles however, the angle dominates other meteoroid features. This behaviour is what we would expect qualitatively; at steep angles, we expect the spatial distribution of craters to be dominated by random processes during the breakup events.
@@ -131,35 +131,35 @@ In this work, we use the median distance. We found that it is often very similar
 
 In our variable RNG seed analysis, we see that the dispersion is quite well defined for the two steeper trajectory angles (45 and 80 degrees). The relative error is between 10 - 15\%. At shallower angles, dispersion becomes significantly more variable with relative errors of $\sim$50\%. 
 
-\begin{figure*}
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/disp_vs_angle}
+    \includegraphics[width=0.45\textwidth]{figures/disp_vs_angle}
     \caption{Median dispersion vs. initial trajectory angle.}
     \label{fig:disp_vs_angle}
-\end{figure*}
+\end{figure}
 
 For high values of dispersion, Figure~\ref{fig:disp_vs_angle} shows that in our model, the dispersion is largely influenced by the pre-entry impact angle. In fact, as figure~\ref{fig:disp_vs_aspect} shows, an important limitation of our model is that high levels of dispersion only occur for smaller aspect ratios.
 
 Only considering one measure of the distribution of separation distances has its limitations however. In future work, we might want to consider additional features of this distribution. For example, the median or standard deviation does not capture sub-clustering of craters; that is, pockets of nearby craters that are clearly separated from the others.
 
-\begin{figure*}
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/disp_vs_aspect}
+    \includegraphics[width=0.45\textwidth]{figures/disp_vs_aspect}
     \caption{Median dispersion vs. aspect ratio of best-fit ellipse. It shows that there is a threshold for dispersion above which our model can only produce clusters with that value if they are distributed within a tight ellipse. For the model parameters we used, the threshold is about $100\unit{m}$.}
     \label{fig:disp_vs_aspect}
-\end{figure*}
+\end{figure}
 
 \subsection{Number of craters}
 The crater clusters mapped by \cite{daubar2019recently} only contain craters with a diameter of at least $1\unit{m}$, which is linked to the resolution of the images that they worked with.
 Because of this limit, we would expect the number of craters large enough to be visible to provide a lower limit to the effective diameter, and therefore to the mass of the impactor, which is indeed what Fig.~\ref{fig:n_craters_vs_m} shows for clusters of more than 20 craters.
 The number of craters generally varies by about 15 - 20\%.
 
-\begin{figure*}
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/n_craters_vs_mass}
+    \includegraphics[width=0.45\textwidth]{figures/n_craters_vs_mass}
     \caption{Number of craters vs. initial meteoroid mass. Above about 20 craters, it provides a lower limit to the meteoroid mass. There is also a minimum mass to form at least two detectable craters.}
     \label{fig:n_craters_vs_m}
-\end{figure*}
+\end{figure}
 
 \subsection{Fraction of large craters}
 Considering this measure was proposed by \cite{newland2019CFM18}, who attempted to find a way to quantify the diameter-frequency distribution of craters in the clusters. The definition of a large crater is that its diameter $d_i$ has to be larger than a fraction $f$ of the largest diameter $d_\mathrm{max}$.
@@ -171,12 +171,12 @@ Considering this measure was proposed by \cite{newland2019CFM18}, who attempted 
 In this work, we kept the inner structure fixed. We did not see an appreciable influence that fixing this quantity had on any of the meteoroid features.
 Aside from an obvious one, where there is a minimum mass required to get a very small fraction of large craters (cf. fig.~\ref{fig:f_large_vs_mass}). This is what we would expect if there are one or two large craters; in order to form a sufficiently large number of small craters, a larger mass is required (Figure~\ref{fig:n_craters_vs_m}).
 
-\begin{figure*}
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/f_large_vs_mass}
+    \includegraphics[width=0.45\textwidth]{figures/f_large_vs_mass}
     \caption{Number of craters vs. initial meteoroid mass. Above about 20 craters, it provides a lower limit to the meteoroid mass. There is also a minimum mass to form at least two detectable craters.}
     \label{fig:f_large_vs_mass}
-\end{figure*}
+\end{figure}
 
 \subsection{Summary}
 

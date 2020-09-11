@@ -123,13 +123,13 @@
 
 
 %%% Titlepage %%%
-
-\maketitle
-%\begin{abstract}
-%\noindent
-%This is the abstract.
-%\end{abstract}
-
+\onecolumn{
+    \maketitle
+    \begin{abstract}
+        \noindent
+        \input{tex/abstract}
+    \end{abstract}
+}
 
 %%% Manual Titlepage %%%
 
@@ -159,6 +159,9 @@
 
 
 %%% Content %%%
+\twocolumn{
+\section{Introduction}
+\input{tex/intro}
 
 \section{Forward Model}
 \input{tex/model}
@@ -166,26 +169,26 @@
 \section{Crater Cluster Characteristics}
 \input{tex/cost_function}
 
+\section{Inversion}
+\input{tex/inversion}
+
+\section{Discussion}
+\input{tex/discussion}
+
 %%% Bibliography %%%
 \FloatBarrier
 
 \bibliography{sources}
 
 \clearpage
-
+}
 
 %%% Appendix %%%
 
 \onecolumn{
-\appendix
-\section*{Appendices}
-\input{tex/derivations}
+    \appendix
+    \section*{Appendices}
+    \input{tex/derivations}
 }
-
-
-
-%\onecolumn{
-
-%}
 
 \end{document}

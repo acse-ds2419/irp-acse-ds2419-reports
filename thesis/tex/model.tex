@@ -1,26 +1,6 @@
-Broadly speaking, there are two different types of atmospheric entry models.
-The first type models the meteoroid as a three-dimensional object with an internal structure and simulates its descent through the atmosphere which is treated as a fluid.
-These simulations are very computationally expensive.
-A much cheaper approach has therefore been developed that uses simplifying assumptions to drastically reduce computational complexity.
-In the first part of this work, we combine various different models of this type into one library, which is used as the foundation for the inverse problem investigated in sections \ref{sec:cost_func} and \ref{sec:mcmc}.
-
-Models of this second type typically describe a meteoroid as a homogeneous ellipsoid. The meteoroid has a mass $m$, velocity $v$, and a fixed density $\rho_m$. Further, such models assume that the meteoroid always flies in a maximum drag orientation. Then the area of the meteoroid cross-section perpendicular to the trajectory is always circular. $r$ is defined to be the radius of this cross-sectional area. Further, the atmospheric drag is assumed to be sufficiently well described by the simple drag equation, where the drag force
-\begin{equation*}
-    F_D = \frac{1}{2}C_D \rho_a v^2 A\,,
-\end{equation*}
-where $C_D$ is a dimensionless coefficient that depends on the shape of the object, an ellipsoid in this case, $\rho_a$ is the air density, and $A$ is the cross-section perpendicular to the trajectory.
-
-This set of assumptions reduces the complexity of equations to be solved from a set of coupled partial differential equations for both the airflow around the meteoroid and the meteoroid itself, to a small set of ordinary differential equations.
-These are called the standard meteoroid physics equations \citep[e.g.,][]{passey1980effects}.
-This approach facilitates a much faster solution (our implementation typically requires only a few hundred microseconds for the entire model if the meteoroid remains intact until it hits the ground).
-
-% These two paragraphs might be better off in the introduction?
- This type of model has been widely used in previous investigations of meteoroid disruption in Earth's atmosphere. For example, \cite{hills1993fragmentation} modeled energy deposition and airburst damage for various impactors on Earth, while \cite{passey1980effects} investigated the spatial distribution of meteorites in strewn fields on Earth. An important distinction between these two examples is the way in which the meteoroid breaks up due to the forces of aerodynamic pressure, which is described in the next subsection. 
-
+\label{sec:forward_model}
 The modelling framework developed here builds on the work by \cite{wheeler2017fragmentcloud,wheeler2018atmospheric} and extends it in several ways. The specific theoretical model by \cite{wheeler2017fragmentcloud} was chosen since it is the most general, meaning that it can be specialized to behave like most of the other models in the literature with a specific set of parameters.
 In this work, the set of coordinates and equations is adjusted such that the model tracks the meteoroid and its fragments in three dimensional space and calculates the locations of impacts on the surface.
-Second, our framwork adds a choice of model for debris cloud (\cite{hills1993fragmentation}, \cite{avramenko2014simulation}, \cite{chyba1993tunguska}).
-Third, it implements a variety of breakup mechanisms.
 
 \subsection{Initial descent phase}
 
@@ -115,7 +95,14 @@ The idea for this hybrid model was first presented at a conference \citep{mehta2
 The model is conceptually very similar to the separate fragments approach.
 The key difference is that as a result of each break up event, in addition to breaking up into a small number of fragments, a portion of the meteoroid mass forms a debris cloud that is described with a pancake-type model.
 
-\cite{wheeler2018atmospheric} expanded the fragment-cloud model by introducing an inner structure to the meteoroid. This changes how the initial break up works. Instead of treating the meteoroid as a homogeneous object, the meteoroid is modeled to break up into predefined groups of fragments, each with potentially different density, size and strength. This allows modeling of very inhomogeneous meteoroids, so-called rubble piles. It also allows the meteoroid to break up into smaller weak parts and larger strong parts, which is not possible in the separate fragments model that defines the strength with a Weibull scaling law. \cite{wheeler2018atmospheric} achieved good agreement with terrestrial light-curve data when they assumed such a structure.
+\cite{wheeler2018atmospheric} expanded the fragment-cloud model by introducing an inner structure to the meteoroid, illustrated in figure~\ref{fig:FCMv2}. This changes how the initial break up works. Instead of treating the meteoroid as a homogeneous object, the meteoroid is modeled to break up into predefined groups of fragments, each with potentially different density, size and strength. This allows modeling of very inhomogeneous meteoroids, so-called rubble piles. It also allows the meteoroid to break up into smaller weak parts and larger strong parts, which is not possible in the separate fragments model that defines the strength with a Weibull scaling law. \cite{wheeler2018atmospheric} achieved good agreement with terrestrial light-curve data when they assumed such a structure.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/wheeler_diagram.jpg}
+    \caption{FCM model diagram, taken from \cite{wheeler2018atmospheric}.
+        A meteoroid is modeled to enter a planetary atmosphere with a speed $v$ and a trajectory angle $\theta$ relative to the ground. When the ram pressure exceeds its aerodynamic strength at height $h$ above the ground, it fragments into different structural groups, and a debris cloud. The debris cloud is described with a ``pancake''-style model. The fragments descend further into the atmosphere and may undergo successive fragmentation when their aerodynamic strength is exceeded.\label{fig:FCMv2}}
+\end{figure*}
 
 \subsection{Impact}
 
@@ -130,7 +117,7 @@ Once fragments of the meteoroid impact the ground, we use a well-established sca
 \end{align}
 This relationship cover a large range of potential surface properties and impact scenarios.
 $g_0$ is the gravitational acceleration at the impact location, $r$ the radius of the impacting fragment, $v_z$ its vertical velocity, $m$ its mass and $\rho_i$ its density. Without the factor $f_\mathrm{rim}$, these laws calculate the crater diameter at pre-impact surface level.
-Some of the crater ejecta typically form a rim around the crater, which is what is visible on satellite images. We therefore multiply the result by $f_\mathrm{rim} \sim 1.3$ to match observations more closely \citep{citation_needed}. The ground is modeled with the following properties: Density $\rho_t$, strength $Y$, and a number of coefficients $K_1$, $K_2$, $K_r$, $\mu$, $\nu$. While the library allows for arbitrary values to be set, this work used parameters appropriate for a weak granular soil \citep{holsapple1987scaling}, listed in table~\ref{tab:holsapple_coeff}.  
+Some of the crater ejecta typically form a rim around the crater, which is what is visible on satellite images. We therefore multiply the result by $f_\mathrm{rim} \sim 1.3$ to match observations more closely \citep{daubar2020newcrater}. The ground is modeled with the following properties: Density $\rho_t$, strength $Y$, and a number of coefficients $K_1$, $K_2$, $K_r$, $\mu$, $\nu$. While the library allows for arbitrary values to be set, this work used parameters appropriate for a weak granular soil \citep{holsapple1987scaling}, listed in table~\ref{tab:holsapple_coeff}.  
 
 In cases where two or more craters overlap, they are combined into a single crater with a volume equal to the sum of the two crater volumes.
 
@@ -151,7 +138,8 @@ In cases where two or more craters overlap, they are combined into a single crat
 \end{table}
 
 \subsection{Implementation}
-The main goal of the implementation was to develop a flexible, high-performance library. The implementation used in a similar work \citep{newland2019CFM18} was available, but was severely limited in performance and scalability. Its main limiting factor was that it was written entirely in Python. It performed well enough to be usable for entirely cloud-driven models, as well as for scenarios with few fragments. However, for meteoroids heavier than a few kilograms, the number of fragments produced by the model can soon reach tens of thousands, which brings the solver to a crawl. Because of the iterative nature of any ODE solver, the solver loop cannot be vectorized.
+\label{sec:implementation}
+The main goal of the implementation was to develop a flexible, high-performance library. The implementation used in a similar work \citep{newland2019CFM18} was available, but was severely limited in performance and scalability. Its main limiting factor was that it was written entirely in Python. It performed well enough to be usable for entirely cloud-driven models, as well as for scenarios with few fragments. However, for meteoroids heavier than a few kilograms, the number of fragments produced by the model can soon reach tens of thousands, which brings the solver to a crawl. Because of the iterative nature of any ODE solver, the solver loop cannot be vectorised.
 We therefore re-implemented the forward model in a compiled language, C++.
 For ease of use, we developed a Python API for it, and plan to release the entire library as a Python package.
 
@@ -161,8 +149,8 @@ Contrary to what \cite{wheeler2017fragmentcloud} proposed, our implementation us
 \subsubsection{Performance optimizations}
 The library provides the option to use either a fixed or an adaptive time step size that adjusts to the estimated local error of each fragment and debris cloud individually. It offers second and fourth order accurate schemes. In our convergence analysis, we found that with a variable step size, our model achieves the same accuracy at $1/3$ of the number of iterations compared to a fixed time step size. It avoids wasting computation time early on in the simulation, when not much is happening in the thin upper atmosphere, while significantly decreasing the step size when fragmentation is happening and rapidly ablating/decelerating debris clouds and tiny fragments are formed.
 
-Opting for a time stepping scheme instead of Wheeler's fixed $z$ step poses two challenges that we had to address. First, any time stepping scheme will overshoot the moment of impact ($z_\mathrm{final} < z_\mathrm{ground}$), which is not the case if the $z$ step size is chosen correctly. The solution is straightforward, we decrease the last step size such that $z_\mathrm{final} = z_\mathrm{ground}$ exactly. Second, in the case of a variable step size, which is different for each fragment in the simulation, calculating the energy deposition in the atmosphere per unit height, $dE/dz$, requires interpolation. As a side note, a similar overshooting problem and the solution that we came up with is described in appendix~\ref{sec:overshoot}. This last problem is also present in the ODE solving approach that \cite{wheeler2017fragmentcloud} used.
+Opting for a time stepping scheme instead of Wheeler et al.'s fixed $z$ step poses two challenges that we had to address. First, any time stepping scheme will overshoot the moment of impact ($z_\mathrm{final} < z_\mathrm{ground}$), which is not the case if the $z$ step size is chosen correctly. The solution is straightforward: we decrease the last step size such that $z_\mathrm{final} = z_\mathrm{ground}$ exactly. Second, in the case of a variable step size, which is different for each fragment in the simulation, calculating the energy deposition in the atmosphere per unit height, $dE/dz$, requires interpolation. As a side note, a similar overshooting problem and the solution that we came up with is described in appendix~\ref{sec:overshoot}. This last problem is also present in the ODE solving approach that \cite{wheeler2017fragmentcloud} used.
 
-The second significant performance saver is that we exclude fragments from the simulation that are no longer relevant in two ways: First, if a fragment or a debris cloud would produce an impact crater that is smaller than a per-defined threshold, and second if a debris cloud has deposited practically all its kinetic energy into the atmosphere. Both avoid needlessly tracking tiny fragments which would form craters that are too small for detection. 
-All these techniques combined yield an enormous performance increase; we see between two and three orders of magnitude of improvement compared to the Python implementation.
+Another significant performance advantage of our model is that we exclude fragments from the simulation that are no longer relevant in two ways: First, if a fragment or a debris cloud would produce an impact crater that is smaller than a pre-defined threshold, and second if a debris cloud has deposited practically all its kinetic energy into the atmosphere. Both avoid needlessly tracking tiny fragments that would form craters too small to detect. 
+All these techniques combined yield an enormous performance increase; we see between two and three orders of magnitude improvement compared to the Python implementation.
 It is now feasible to run Monte-Carlo simulations within minutes instead of hours. Potential use cases of the library are numerous. We utilize it in the following sections to investigate martian crater clusters.
